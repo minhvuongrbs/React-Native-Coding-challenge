@@ -10,57 +10,93 @@ import {
     TouchableOpacity,
     FlatList,
 } from 'react-native';
-
 import Icon from 'react-native-vector-icons/FontAwesome';
+import store from '../store';
+import { getProductList, getProductDetail } from '../actions';
+import { connect } from 'react-redux'
+import { Object } from 'core-js';
 
 class ProductList extends Component {
+    constructor(props) {
+        super(props);
+    }
+
+    componentDidMount() {
+        fetch('https://listing-stg.services.teko.vn/api/search/?channel=pv_online&visitorId=&q=&terminal=cp01')
+            .then(res => res.json())
+            .then(
+                result => store.dispatch(getProductList(result.result.products))
+            )
+    }
+
     render() {
+        const { productList } = this.props;
         const { navigate } = this.props.navigation;
-        const searchData = [
-            { image: "https://img1.phongvu.vn/media/catalog/product/v/i/vigor_2920gvn.jpg", title: "Màn hình LCD HKC 31.5 M32A7Q", newRate: 10000, oldRate: 18000, discount: 20 },
-            { image: "https://img1.phongvu.vn/media/catalog/product/v/i/vigor_2920gvn.jpg", title: "Thẻ nhớ SDHC Sandisk 16GB", newRate: 10000, oldRate: 18000, discount: 20 },
-            { image: "https://img1.phongvu.vn/media/catalog/product/v/i/vigor_2920gvn.jpg", title: "Thẻ nhớ SDHC Sandisk 16GB Extre me Pro (class 10) Ultra", newRate: 10000, oldRate: 18000, discount: 20 },
-            { image: "https://img1.phongvu.vn/media/catalog/product/v/i/vigor_2920gvn.jpg", title: "Thẻ nhớ SDHC Sandisk 16GB Extre me Pro (class 10) Ultra", newRate: 10000, oldRate: 18000, discount: 20 },
-        ];
-        return (
-            <Fragment>
-                <StatusBar barStyle="light-content" backgroundColor="firebrick" />
-                <View style={styles.mainSection}>
-                    <View style={styles.headerSection}>
-                        <View >
-                            <Icon name="chevron-left" color="white" size={20} style={{ paddingLeft: 15 }} />
+        if (productList) {
+            return (
+                <Fragment>
+                    <StatusBar barStyle="light-content" backgroundColor="firebrick" />
+                    <View style={styles.mainSection}>
+                        <View style={styles.headerSection}>
+                            <View >
+                                <Icon name="chevron-left" color="white" size={20} style={{ paddingLeft: 15 }} />
+                            </View>
+                            <View style={styles.searchSection}>
+                                <Icon name="search" color="firebrick" size={18} />
+                                <TextInput
+                                    placeholder="Nhập tên, mã sản phẩm"
+                                    style={{ paddingLeft: 15 }}
+                                />
+                            </View>
                         </View>
-                        <View style={styles.searchSection}>
-                            <Icon name="search" color="firebrick" size={18} />
-                            <TextInput
-                                placeholder="Nhập tên, mã sản phẩm"
-                                style={{ paddingLeft: 15 }}
-                            />
-                        </View>
-                    </View>
-                    <FlatList
-                        data={searchData}
-                        renderItem={({ item }) => (
-                            <TouchableOpacity onPress={() => { navigate('Detail') }}>
-                                <View style={styles.itemSection}>
-                                    <Image
-                                        style={{ width: 80, height: 80, resizeMode: 'center' }}
-                                        source={{ uri: item.image }} />
-                                    <View style={styles.itemDetail}>
-                                        <Text style={{ color: 'black', fontSize: 14 }} > {item.title}</Text>
-                                        <Text style={{ color: 'firebrick', fontSize: 15 }} > {item.newRate}</Text>
-                                        <Text style={{ color: 'gray', fontSize: 12, textDecorationLine: 'line-through' }} > {item.oldRate}</Text>
+                        <FlatList
+                            data={productList}
+                            renderItem={({ item }) => (
+                                <TouchableOpacity onPress={() => {
+                                    console.log('link: https://listing-stg.services.teko.vn/api/products/' + item.sku);
+                                    fetch('https://listing-stg.services.teko.vn/api/products/' + item.sku)
+                                        .then(res => res.json())
+                                        .then(
+                                            result => store.dispatch(getProductDetail(result.result.product))
+                                        );
+                                    navigate('Detail');
+                                }}>
+                                    <View style={styles.itemSection}>
+                                        {
+                                            item.images.length > 0
+                                                ? (<Image
+                                                    style={{ width: 80, height: 80, resizeMode: 'center' }}
+                                                    source={{ uri: item.images[0].url }} />) :
+                                                (<Image
+                                                    style={{ width: 80, height: 80, resizeMode: 'center' }}
+                                                    source={require('../assets/default_image.png')} />)
+                                        }
+                                        <View style={styles.itemDetail}>
+                                            <Text style={{ color: 'black', fontSize: 14 }} > {item.displayName}</Text>
+                                            <Text style={{ color: 'firebrick', fontSize: 15 }} > {item.price.supplierSalePrice}</Text>
+                                            <Text style={{ color: 'gray', fontSize: 12, textDecorationLine: 'line-through' }} > {item.price.sellPrice}</Text>
+                                        </View>
                                     </View>
-                                </View>
-                            </TouchableOpacity>
-                        )}
-                        keyExtractor={(item, index) => index.toString()}
-                    />
-                </View>
-            </Fragment>
-        );
+                                </TouchableOpacity>
+                            )}
+                            keyExtractor={(item, index) => index.toString()}
+                        />
+                    </View>
+                </Fragment>
+            );
+        } else return (
+            <View>
+                <Text>is loading</Text>
+            </View>
+        )
     }
 }
+
+const mapStateToProps = state => ({
+    productList: state.productList
+})
+
+export default connect(mapStateToProps, {})(ProductList)
 
 const styles = StyleSheet.create({
     mainSection: {
@@ -103,5 +139,3 @@ const styles = StyleSheet.create({
         marginLeft: 6
     }
 });
-
-export default ProductList;
