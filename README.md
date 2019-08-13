@@ -1,3 +1,3 @@
 # Interview-Repository
-- Checkout to Feature branch to pull code
+- Checkout to feature branch to pull code
 - Install all dependencies by "yarn install"
