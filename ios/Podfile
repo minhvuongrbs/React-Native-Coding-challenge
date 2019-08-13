@@ -30,6 +30,8 @@ target 'ProductDiscovery' do
 
   pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler'
 
+  pod 'BVLinearGradient', :path => '../node_modules/react-native-linear-gradient'
+
   target 'ProductDiscoveryTests' do
     inherit! :search_paths
     # Pods for testing
