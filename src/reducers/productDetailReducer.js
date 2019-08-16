@@ -1,8 +1,8 @@
-import {GET_PRODUCT_DETAIL} from '../actions/type'
+import { SA_RE_PRODUCT_DETAIL_RECEIVED} from '../actions/type'
 export default productReducer = (state = '', action) => {
     switch (action.type) {
-        case GET_PRODUCT_DETAIL:
-            return action.payload;
+        case SA_RE_PRODUCT_DETAIL_RECEIVED:
+            return action.productDetail;
         default:
             return state;
     }

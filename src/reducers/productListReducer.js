@@ -1,8 +1,8 @@
-import {GET_PRODUCT_LIST} from '../actions/type'
+import { SA_RE_PRODUCT_LIST_RECEIVED } from '../actions/type'
 export default productReducer = (state = '', action) => {
     switch (action.type) {
-        case GET_PRODUCT_LIST:
-            return action.payload;
+        case SA_RE_PRODUCT_LIST_RECEIVED:            
+            return action.productList;
         default:
             return state;
     }

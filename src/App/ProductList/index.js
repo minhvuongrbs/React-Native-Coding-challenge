@@ -15,31 +15,27 @@ import store from '../../store';
 import { getProductList, getProductDetail } from '../../actions';
 import { connect } from 'react-redux';
 import styles from './styles';
-import API from '../../api'
 
 class ProductList extends Component {
     constructor(props) {
         super(props);
         this.state = {
             searchInfo: '',
-            loading: true
+            loading: true,
         }
     }
 
     componentDidMount() {
-        API.get('search/?channel=pv_online&visitorId=&q=&terminal=cp01')
-            .then(result => {
-                store.dispatch(getProductList(result.data.result.products))
-                this.setState({ loading: false })
-            })
-            .catch(error => console.log(error));
+        store.dispatch(getProductList(''));
     }
 
     render() {
         const { searchInfo, loading } = this.state;
         const { productList } = this.props;
         const { navigate } = this.props.navigation;
-        if (!loading) {
+        if (productList) {
+            console.log("productList: " + productList[0].displayName);
+
             return (
                 <Fragment>
                     <StatusBar backgroundColor="rgb(245,71,30)" />
@@ -51,9 +47,7 @@ class ProductList extends Component {
                             <View style={styles.searchSection}>
                                 <Icon name="search" color="rgb(245,71,30)" size={18}
                                     onPress={() => {
-                                        API.get('/search/?channel=pv_online&visitorId=&q=' + searchInfo + '&terminal=cp01')
-                                            .then(result => store.dispatch(getProductList(result.data.result.products)))
-                                            .catch(error => console.log(error));
+                                        store.dispatch(getProductList(searchInfo));
                                     }}
                                 />
                                 <TextInput
@@ -67,9 +61,7 @@ class ProductList extends Component {
                             data={productList}
                             renderItem={({ item }) => (
                                 <TouchableOpacity onPress={() => {
-                                    API.get('products/' + item.sku)
-                                        .then(result => store.dispatch(getProductDetail(result.data.result.product)))
-                                        .catch(error => console.log(error));
+                                    store.dispatch(getProductDetail(item.sku));
                                     navigate('Detail');
                                 }}>
                                     <View style={styles.itemSection}>
