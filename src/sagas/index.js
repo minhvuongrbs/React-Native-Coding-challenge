@@ -1,33 +1,16 @@
 import { takeEvery, put, call, fork, all } from 'redux-saga/effects'
-import * as Type from './actions/type';
-import API from './api'
-
-function fetchProductList(filter) {
-    return API.get('search/?channel=pv_online&visitorId=&q=' + filter + '&terminal=cp01')
-        .then(result => result.data)
-        .catch(error => console.log(error));
-}
-
-function fetchProductDetail(sku) {
-    return API.get('products/' + sku)
-        .then(result => result.data)
-        .catch(error => console.log(error));
-}
+import * as Type from '../actions/type';
+import * as Apis from './apis/product';
 
 function* getProductList(action) {
-    const response = yield call(fetchProductList, action.filter);
+    const response = yield call(Apis.fetchProductList, action.filter);
     yield put({ type: Type.SA_RE_PRODUCT_LIST_RECEIVED, productList: response.result.products })
 }
 
 function* getProductDetail(action) {
-    const response = yield call(fetchProductDetail, action.sku);
+    const response = yield call(Apis.fetchProductDetail, action.sku);
     yield put({ type: Type.SA_RE_PRODUCT_DETAIL_RECEIVED, productDetail: response.result.product })
 }
-
-
-
-
-
 
 function* watchGetProductList() {
     yield takeEvery(Type.UI_SAGA_GET_PRODUCT_LIST, getProductList)

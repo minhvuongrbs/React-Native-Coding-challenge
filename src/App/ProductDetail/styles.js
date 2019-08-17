@@ -4,14 +4,6 @@ export default styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'column',
     },
-    rateSection: {
-        flexDirection: 'row',
-        marginLeft: 12
-    },
-    suggestedProduct: {
-        flexDirection: 'column',
-        width: 100,
-    },
     cartSection: {
         flexDirection: 'row',
         alignItems: 'center',

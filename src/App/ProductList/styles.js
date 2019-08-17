@@ -5,25 +5,6 @@ export default styles = StyleSheet.create({
         flexDirection: 'column',
         backgroundColor: 'rgb(238,241,243)'
     },
-    headerSection: {
-        backgroundColor: 'firebrick',
-        width: '100%',
-        height: 50,
-        flexDirection: 'row',
-        alignItems: 'center'
-    },
-    searchSection: {
-        width: '80%',
-        flexDirection: 'row',
-        alignItems: 'center',
-        backgroundColor: 'white',
-        borderRadius: 10,
-        marginTop: 5,
-        marginBottom: 10,
-        marginLeft: 15,
-        marginRight: 10,
-        paddingLeft: 10
-    },
     itemSection: {
         flex: 1,
         flexDirection: 'row',

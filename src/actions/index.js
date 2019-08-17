@@ -19,7 +19,7 @@ export const getProductDetail = sku => {
     }
 }
 
-export const ProductDetailReceived = productDetail => {
+export const productDetailReceived = productDetail => {
     return {
         type: Type.SA_RE_PRODUCT_DETAIL_RECEIVED,
         productDetail: productDetail
