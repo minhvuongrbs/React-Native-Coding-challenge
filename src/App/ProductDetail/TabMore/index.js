@@ -3,6 +3,8 @@ import { Text, View } from 'react-native'
 import { IndicatorViewPager, PagerTitleIndicator } from 'rn-viewpager'
 
 export default class TabMore extends Component {
+    //TODO not implemented data yet
+    
     render() {
         return (
             <IndicatorViewPager

@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { Text, View, Image, FlatList } from 'react-native'
 
 export default class index extends Component {
+    //TODO not implemented data yet
+
     render() {
         const suggestedProduct = [
             { image: "https://img1.phongvu.vn/media/catalog/product/v/i/vigor_2920gvn.jpg", title: "Màn hình LCD HKC 31.5 M32A7Q", newRate: 10000, oldRate: 18000, discount: 20 },
