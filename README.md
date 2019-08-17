@@ -4,4 +4,4 @@
   + Search for products
   + Navigate to a new screen to check Product Detail and able to go back
 - Checkout to feature branch to pull code
-- Install all dependencies by "yarn install"
+- This application will run best on Samsung Galaxy S7
